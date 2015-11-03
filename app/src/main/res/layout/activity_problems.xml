@@ -1,0 +1,50 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:weightSum="1">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/problemViewPager"
+        android:layout_width="wrap_content"
+        android:layout_height="400dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/problemText"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.08"
+        android:gravity="center"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/authorText"
+        android:layout_gravity="center_horizontal" />
+
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/seekBar"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.82"
+        android:maxHeight="85dp"
+        android:indeterminate="false"
+        android:progress="0" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:id="@+id/indexText"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.25"
+        android:gravity="right"/>
+
+</LinearLayout>

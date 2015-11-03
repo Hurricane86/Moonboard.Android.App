@@ -1,0 +1,92 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <TextView
+        android:text="Holds"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/holdLabel" />
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/holdSpinner"
+        android:entries="@array/holds_arrays" />
+    <TextView
+        android:text="Setup"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/setupLabel" />
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/setupSpinner"
+        android:entries="@array/holds0_arrays" />
+    <TextView
+        android:text="From Grade"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/fromGradeLabel" />
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/fromGradeSpinner"
+        android:entries="@array/grade_arrays" />
+    <TextView
+        android:text="To Grade"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toGradeLabel" />
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toGradeSpinner"
+        android:entries="@array/grade_arrays" />
+    <TextView
+        android:text="Author"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/authorText" />
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/authorSpinner"/>
+    <Button
+        android:text="Show problems"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/searchButton"
+        android:layout_marginTop="3px" />
+    <Button
+        android:text="Problem editor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/newProblemButton"
+        android:layout_marginTop="3px" />
+    <Button
+        android:text="Setup wizard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/setupWizardButton"
+        android:layout_marginTop="3px" />
+    <Button
+        android:text="Circuits"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/circuitsButton"
+        android:layout_marginTop="3px"
+        android:enabled="false"/>
+    <Button
+        android:text="Stats"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/statsButton"
+        android:layout_marginTop="3px"/>
+
+</LinearLayout>

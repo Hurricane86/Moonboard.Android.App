@@ -1,0 +1,112 @@
+<resources>
+    <string name="app_name">Moonboard</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings...</string>
+    <string name="action_sendToMoonboard">Send to Moonboard!</string>
+    <string name="action_markAsDone">Mark as Done!</string>
+    <string name="action_markAsNotDone">Mark as Not Done!</string>
+    <string name="action_vote">Vote...</string>
+    <string name="action_userRecord">User record...</string>
+    <string name="action_addToWishlist">Add to the wishlist!</string>
+    <string name="action_removeFromWishlist">Remove from the wishlist!</string>
+    <string name="action_addToCircuit">Add to circuit...</string>
+    <string name="action_holdTypeSelector">Hold type...</string>
+    <string name="action_freeSelectionModeOn">Free selection mode (ON)</string>
+    <string name="action_freeSelectionModeOff">Free selection mode (OFF)</string>
+    <string name="action_clear">Clear all!</string>
+    <string name="action_save">Save...</string>
+
+    <string-array name="holds_arrays">
+        <item>Original School Holds (1-40)</item>
+        <item>School Hold Set A (50-99)</item>
+        <item>School Hold Set B (100-149)</item>
+        <item>Set A + Set B</item>
+        <item>Original School Holds + Set A + Set B</item>
+    </string-array>
+
+    <string-array name="holds0_arrays">
+        <item>Setup 1 - Ben Moon</item>
+        <item>Setup 2 - Ben Moon</item>
+        <item>Setup 3 - Ben Moon</item>
+        <item>Setup 4 - Ben Moon</item>
+        <item>Setup 5 - Ben Moon</item>
+        <item>Setup 6 - Ben Moon</item>
+        <item>Setup 7 - Lucas Dourdourekas</item>
+        <item>Setup 8 - Ben Moon</item>
+    </string-array>
+
+    <string-array name="holds1_arrays">
+        <item>Setup 1 - Mike Adams</item>
+        <item>Setup 2 - Lucas Dourdourekas</item>
+        <item>Setup 3 - Lucas Dourdourekas</item>
+        <item>Setup 4 - Ben Moon</item>
+        <item>Setup 5 - Ivan Lisica</item>
+    </string-array>
+
+    <string-array name="holds2_arrays">
+        <item>Setup 1 - Mike Adams</item>
+        <item>Setup 2 - Lucas Dourdourekas</item>
+        <item>Setup 3 - Lucas Dourdourekas</item>
+        <item>Setup 4 - Ben Moon</item>
+        <item>Setup 5 - Ivan Lisica</item>
+    </string-array>
+
+    <string-array name="holds3_arrays">
+        <item>Setup 1 - Lucas Dourdourekas</item>
+    </string-array>
+
+    <string-array name="holds4_arrays">
+        <item>Setup 1 - Lucas Dourdourekas</item>
+    </string-array>
+
+    <string-array name="grade_arrays">
+        <item>6A</item>
+        <item>6A+</item>
+        <item>6B</item>
+        <item>6B+</item>
+        <item>6C</item>
+        <item>6C+</item>
+        <item>7A</item>
+        <item>7A+</item>
+        <item>7B</item>
+        <item>7B+</item>
+        <item>7C</item>
+        <item>7C+</item>
+        <item>8A</item>
+        <item>8A+</item>
+        <item>8B</item>
+        <item>8B+</item>
+        <item>8C</item>
+    </string-array>
+
+    <string-array name="votes_arrays">
+        <item>NO VOTE</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+     </string-array>
+
+    <string-array name="hold_types">
+        <item>Normal hold</item>
+        <item>Start hold</item>
+        <item>Top hold</item>
+    </string-array>
+    
+    <string name="title_activity_problems">Problems</string>
+    <string name="title_activity_color_picker">Color Picker</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <string name="title_dialog_voting">Vote</string>
+    <string name="title_dialog_selectHoldType">Select hold type</string>
+
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="noProblemsFound">"no problems found..."</string>
+    <string name="title_activity_create_problem">Problem editor</string>
+    <string name="title_activity_setup_wizard">Setup wizard</string>
+    <string name="title_activity_stats">Stats</string>
+
+</resources>

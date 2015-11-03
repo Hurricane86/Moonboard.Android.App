@@ -88,6 +88,8 @@ public class StatsActivity extends Activity {
         userDb.close();
         appDb.close();
 
+        c.close();
+
         Random rnd = new Random();
         for(int i = 0; i < gradeCount; ++i)
         {

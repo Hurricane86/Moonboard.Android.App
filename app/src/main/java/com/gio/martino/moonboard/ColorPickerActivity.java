@@ -101,7 +101,7 @@ public class ColorPickerActivity extends Activity implements OnColorChangedListe
 
                 SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
                 edit.putInt(setting_id, mColorPickerView.getColor());
-                edit.commit();
+                edit.apply();
 
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("result", mColorPickerView.getColor());

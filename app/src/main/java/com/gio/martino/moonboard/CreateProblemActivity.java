@@ -2,11 +2,8 @@ package com.gio.martino.moonboard;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,8 +14,8 @@ import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -42,7 +39,7 @@ public class CreateProblemActivity extends Activity {
         public int type;
 
         @Override
-        public int compareTo(Hold o) {
+        public int compareTo(@NonNull Hold o) {
             if(index == o.index)
                 return 0;
 
@@ -65,7 +62,7 @@ public class CreateProblemActivity extends Activity {
         }
     }
 
-    Set<Hold> holds = new HashSet<Hold>();
+    Set<Hold> holds = new HashSet<>();
     private byte[] setupHolds = null;
     private Bitmap cachedBitmap = null;
     private int selectedHoldType = 0;
@@ -103,8 +100,8 @@ public class CreateProblemActivity extends Activity {
                 ((ImageView) view).getImageMatrix().invert(invertMatrix);
 
                 invertMatrix.mapPoints(eventXY);
-                int x = Integer.valueOf((int) eventXY[0]);
-                int y = Integer.valueOf((int) eventXY[1]);
+                int x = (int) eventXY[0];
+                int y = (int) eventXY[1];
 
                 Drawable imgDrawable = ((ImageView) view).getDrawable();
                 Bitmap bitmap = ((BitmapDrawable) imgDrawable).getBitmap();
@@ -200,8 +197,8 @@ public class CreateProblemActivity extends Activity {
         int i = 0;
         for(Hold h : holds)
         {
-            data[i++] = new Integer(h.index).byteValue();
-            data[i++] = new Integer(h.type).byteValue();
+            data[i++] = Integer.valueOf(h.index).byteValue();
+            data[i++] = Integer.valueOf(h.type).byteValue();
         }
 
         ((MoonboardApplication)getApplication()).getMoonboardCommunicationService().send(MoonboardCommunicationService.MESSAGE_TYPE_SET_PROBLEM, data);

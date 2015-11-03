@@ -4,7 +4,6 @@ package com.gio.martino.moonboard;
  * Created by Martino on 23/09/2015.
  */
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;

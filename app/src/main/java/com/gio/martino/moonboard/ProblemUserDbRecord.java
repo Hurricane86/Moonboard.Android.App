@@ -57,6 +57,7 @@ public class ProblemUserDbRecord
         }
 
         db.close();
+        c.close();
     }
 
     public int getProblemId()       { return problemId; }

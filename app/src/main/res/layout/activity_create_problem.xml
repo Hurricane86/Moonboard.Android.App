@@ -11,6 +11,7 @@
         android:focusableInTouchMode="true"
         android:focusable="true"
         android:clickable="true"
-        android:scaleType="fitCenter"/>
+        android:scaleType="fitCenter"
+        android:contentDescription="moonboard"/>
 
 </FrameLayout>

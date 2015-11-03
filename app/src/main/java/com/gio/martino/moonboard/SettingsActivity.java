@@ -31,7 +31,7 @@ public class SettingsActivity extends Activity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(compoundButton.getContext()).edit();
                 edit.putBoolean("realtimeUpdate", b);
-                edit.commit();
+                edit.apply();
             }
         });
 
@@ -90,9 +90,10 @@ public class SettingsActivity extends Activity {
         int blue = Color.blue(color);
         int green = Color.green(color);
 
-        SurfaceView sv = null;
+        SurfaceView sv;
         switch(holdType)
         {
+            default:
             case 0: {
                 sv = (SurfaceView) findViewById(R.id.normalHoldSV);
                 break;

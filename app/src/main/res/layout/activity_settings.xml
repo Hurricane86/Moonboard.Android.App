@@ -101,5 +101,6 @@
         android:src="@drawable/status_not_connected"
         android:layout_alignBottom="@+id/connectionStatusTextView"
         android:layout_alignEnd="@+id/normalHoldSV"
-        android:layout_alignTop="@+id/connectionStatusTextView" />
+        android:layout_alignTop="@+id/connectionStatusTextView"
+        android:contentDescription="moonboard"/>
 </RelativeLayout>

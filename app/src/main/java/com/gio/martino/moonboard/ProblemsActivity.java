@@ -1,9 +1,7 @@
 package com.gio.martino.moonboard;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -19,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
@@ -46,7 +43,7 @@ public class ProblemsActivity extends Activity {
         VOLUME_BUTTONS,
         MOONBOARD,
         REFRESHING
-    };
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -436,10 +433,10 @@ public class ProblemsActivity extends Activity {
 
             String[] attemptsStr = new String[99];
             for(int i = 0; i < attemptsStr.length; ++i)
-                attemptsStr[i] = new Integer(i+1).toString();
+                attemptsStr[i] = Integer.toString(i+1);
 
             final Spinner attemptsList = (Spinner)dialog.findViewById(R.id.attemptsSpinner);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                     android.R.layout.simple_spinner_dropdown_item, attemptsStr);
             attemptsList.setAdapter(adapter);
 

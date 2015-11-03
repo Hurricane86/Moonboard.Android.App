@@ -93,7 +93,7 @@ public class MainActivity extends Activity {
 
                 SharedPreferences.Editor editSettings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
                 editSettings.putInt("hold_spinner_selection", position);
-                editSettings.commit();
+                editSettings.apply();
             }
 
             @Override
@@ -109,7 +109,7 @@ public class MainActivity extends Activity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 SharedPreferences.Editor editSettings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
                 editSettings.putInt("setup_spinner_selection", position);
-                editSettings.commit();
+                editSettings.apply();
             }
 
             @Override
@@ -129,7 +129,7 @@ public class MainActivity extends Activity {
 
                 SharedPreferences.Editor editSettings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
                 editSettings.putInt("from_grade_spinner_selection", position);
-                editSettings.commit();
+                editSettings.apply();
             }
 
             @Override
@@ -149,7 +149,7 @@ public class MainActivity extends Activity {
 
                 SharedPreferences.Editor editSettings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
                 editSettings.putInt("to_grade_spinner_selection", position);
-                editSettings.commit();
+                editSettings.apply();
             }
 
             @Override
@@ -176,7 +176,7 @@ public class MainActivity extends Activity {
         while (c.moveToNext());
 
         Spinner authorSpinner = (Spinner)findViewById(R.id.authorSpinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, authors);
         authorSpinner.setAdapter(adapter);
         authorSpinner.setSelection(settings.getInt("author_spinner_selection", 0), false);
@@ -186,7 +186,7 @@ public class MainActivity extends Activity {
             {
                 SharedPreferences.Editor editSettings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
                 editSettings.putInt("author_spinner_selection", position);
-                editSettings.commit();
+                editSettings.apply();
             }
 
             @Override

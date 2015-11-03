@@ -102,7 +102,7 @@
     <string name="title_dialog_voting">Vote</string>
     <string name="title_dialog_selectHoldType">Select hold type</string>
 
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="noProblemsFound">"no problems found..."</string>
     <string name="title_activity_create_problem">Problem editor</string>

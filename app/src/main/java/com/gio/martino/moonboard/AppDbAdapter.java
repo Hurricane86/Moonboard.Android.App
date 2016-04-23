@@ -87,7 +87,8 @@ public class AppDbAdapter
                     "holdsType LIKE '" + holdsType +"' AND " +
                     "holdsSetup LIKE '" + holdsSetup +"' AND " +
                     "grade >= " + fromGrade +" AND " +
-                    "grade <= " + toGrade;
+                    "grade <= " + toGrade +
+                    " ORDER BY grade ASC";
 
             if(author != null && !author.isEmpty())
             {

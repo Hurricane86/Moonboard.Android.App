@@ -10,6 +10,13 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 public class MoonboardHttpService extends AsyncTask<String, Void, String>
 {
+    private IHttpServiceBehaviour behaviour;
+
+    MoonboardHttpService(IHttpServiceBehaviour b)
+    {
+        behaviour = b;
+    }
+
     @Override
     protected String doInBackground(String... str)
     {
@@ -17,24 +24,21 @@ public class MoonboardHttpService extends AsyncTask<String, Void, String>
         {
             String get_url = "http://moonboard.x10.mx/moonservice/moonboardService.php?api=" + str[0].replace(" ", "%20");
             HttpClient Client = new DefaultHttpClient();
-            HttpGet httpget;
             ResponseHandler<String> responseHandler = new BasicResponseHandler();
-            httpget = new HttpGet(get_url);
-            String content = Client.execute(httpget, responseHandler);
-
-            return content;
+            HttpGet httpget = new HttpGet(get_url);
+            return Client.execute(httpget, responseHandler);
         }
         catch(Exception e)
         {
             System.out.println(e);
+            return "";
         }
-        return "Cannot Connect";
     }
 
+    @Override
     protected void onPostExecute(String result)
     {
-       // TextView tv = (TextView) findViewById(R.id.show_text);
-       // tv.setText(result);
-       System.out.println(result);
+       if(behaviour != null)
+           behaviour.OnTaskCompleted(result);
     }
 }

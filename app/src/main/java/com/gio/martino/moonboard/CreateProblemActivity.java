@@ -4,18 +4,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -25,9 +18,12 @@ import android.widget.ImageView;
 import java.util.HashSet;
 import java.util.Set;
 
-public class CreateProblemActivity extends Activity {
-
-    class Hold implements Comparable<Hold> {
+public class CreateProblemActivity extends Activity
+{
+    class Hold implements Comparable<Hold>
+    {
+        public int index;
+        public int type;
 
         Hold(int index, int type)
         {
@@ -35,11 +31,9 @@ public class CreateProblemActivity extends Activity {
             this.type = type;
         }
 
-        public int index;
-        public int type;
-
         @Override
-        public int compareTo(@NonNull Hold o) {
+        public int compareTo(Hold o)
+        {
             if(index == o.index)
                 return 0;
 
@@ -62,9 +56,8 @@ public class CreateProblemActivity extends Activity {
         }
     }
 
-    Set<Hold> holds = new HashSet<>();
+    private Set<Hold> holds = new HashSet<>();
     private byte[] setupHolds = null;
-    private Bitmap cachedBitmap = null;
     private int selectedHoldType = 0;
     private int backgroundImageId = R.drawable.setup_1_1;
     private boolean freeSelectionMode = false;
@@ -107,15 +100,21 @@ public class CreateProblemActivity extends Activity {
                 Bitmap bitmap = ((BitmapDrawable) imgDrawable).getBitmap();
 
                 //Limit x, y range within bitmap
-                if (x < 0) {
+                if (x < 0)
+                {
                     x = 0;
-                } else if (x > bitmap.getWidth() - 1) {
+                }
+                else if (x > bitmap.getWidth() - 1)
+                {
                     x = bitmap.getWidth() - 1;
                 }
 
-                if (y < 0) {
+                if (y < 0)
+                {
                     y = 0;
-                } else if (y > bitmap.getHeight() - 1) {
+                }
+                else if (y > bitmap.getHeight() - 1)
+                {
                     y = bitmap.getHeight() - 1;
                 }
 
@@ -140,25 +139,32 @@ public class CreateProblemActivity extends Activity {
         sendToMoonboard();
     }
 
-
-
-    @Override
-    protected void onDestroy()
-    {
-        super.onDestroy();
-    }
-
     public static int holdLetter2Number(String holdLetter)
     {
         if (holdLetter == null || holdLetter.length() == 0)
             return 0;
 
-        char firstChar = holdLetter.charAt(0);
-        int value = firstChar - 'A';
+        // old format : <item>E18 / 91 / N</item>
+        try
+        {
+            char firstChar = holdLetter.charAt(0);
+            int value = firstChar - 'A';
 
-        int value2 = Integer.decode(holdLetter.substring(1).split(" ")[0]);
+            int value2 = Integer.decode(holdLetter.substring(1).split(" ")[0]);
 
-        return value + (value2 - 1) * 11; // 11 = K
+            return value + (value2 - 1) * 11; // 11 = K
+        }
+        // new format: <item>1/H7/SE</item>
+        catch (java.lang.NumberFormatException ex)
+        {
+            String[] strs = holdLetter.split("/");
+
+            char firstChar = strs[1].charAt(0);
+            int value = firstChar - 'A';
+            int value2 = Integer.decode(strs[1].substring(1));
+
+            return value + (value2 - 1) * 11; // 11 = K
+        }
     }
 
     private int getNearestHold(int boardRow, int boardColumn)
@@ -216,79 +222,17 @@ public class CreateProblemActivity extends Activity {
 
     private void drawHolds()
     {
-        if(cachedBitmap == null)
+        byte[] data = new byte[holds.size()*2];
+        int i = 0;
+        for(Hold h : holds)
         {
-            BitmapFactory.Options myOptions = new BitmapFactory.Options();
-            myOptions.inDither = true;
-            myOptions.inScaled = false;
-            myOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
-            //myOptions.inPurgeable = true;
-
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), backgroundImageId);
-            cachedBitmap = Bitmap.createBitmap(bitmap);
+            data[i++] = Integer.valueOf(h.index).byteValue();
+            data[i++] = Integer.valueOf(h.type).byteValue();
         }
 
-        Bitmap mutableBitmap = cachedBitmap.copy(Bitmap.Config.ARGB_8888, true);
-
-        Canvas canvas = new Canvas(mutableBitmap);
-
-        Paint paint = new Paint();
-        paint.setAntiAlias(true);
-        //paint.setColor(Color.RED);
-        paint.setAlpha(60);
-
+        Bitmap image = ProblemBitmap.get(getBaseContext(), backgroundImageId, data, false, false, 0);
         ImageView imageView = (ImageView)findViewById(R.id.imageView);
-        //int w = imageView.getMeasuredWidth();
-        //int h = imageView.getMeasuredHeight();
-
-        float scaleX = 2;//(float)bitmap.getWidth() / (float)w;
-        float scaleY = 2;//(float)bitmap.getHeight() / (float)h;
-
-        float startX = 94 * scaleX;
-        float startY = 936 * scaleY;
-        float deltaX = 50 * scaleX;
-        float deltaY = 50 * scaleY;
-
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        int color_0 = settings.getInt("normal_hold_color", SettingsActivity.DEFAULT_NORMAL_HOLD_COLOR);
-        int color_1 = settings.getInt("start_hold_color", SettingsActivity.DEFAULT_START_HOLD_COLOR);
-        int color_2 = settings.getInt("top_hold_color", SettingsActivity.DEFAULT_NORMAL_HOLD_COLOR);
-
-        for(Hold hold : holds)
-        {
-            int x = hold.index % 11;
-            int y = hold.index / 11;
-
-            float px = startX + x * deltaX;
-            float py = startY - y * deltaY;
-
-            switch(hold.type)
-            {
-                case 0:
-                    paint.setColor(Color.argb(Color.alpha(color_0),
-                            Color.red(color_0),
-                            Color.green(color_0),
-                            Color.blue(color_0)));
-                    break;
-                case 1:
-                    paint.setColor(Color.argb(Color.alpha(color_1),
-                            Color.red(color_1),
-                            Color.green(color_1),
-                            Color.blue(color_1)));
-                    break;
-                case 2:
-                    paint.setColor(Color.argb(Color.alpha(color_2),
-                            Color.red(color_2),
-                            Color.green(color_2),
-                            Color.blue(color_2)));
-                    break;
-            }
-
-            paint.setAlpha(60);
-            canvas.drawCircle(px, py, 50, paint);
-        }
-
-        imageView.setImageBitmap(mutableBitmap);
+        imageView.setImageBitmap(image);
     }
 
     @Override

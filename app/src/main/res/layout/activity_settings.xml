@@ -103,4 +103,22 @@
         android:layout_alignEnd="@+id/normalHoldSV"
         android:layout_alignTop="@+id/connectionStatusTextView"
         android:contentDescription="moonboard"/>
+
+    <Button
+        android:text="Test system"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/updateDbButton"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="15dp"
+        android:id="@+id/testButton" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Update DB"
+        android:id="@+id/updateDbButton"
+        android:layout_marginTop="38dp"
+        android:layout_below="@+id/connectionStatusImageView"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>

@@ -3,7 +3,6 @@ package com.gio.martino.moonboard;
 /**
  * Created by Martino on 23/09/2015.
  */
-import java.io.IOException;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -14,27 +13,17 @@ public class AppDbAdapter
 {
     protected static final String TAG = "DataAdapter";
 
-    private final Context mContext;
     private SQLiteDatabase mDb;
     private AppDbHelper mDbHelper;
 
     public AppDbAdapter(Context context)
     {
-        this.mContext = context;
-        mDbHelper = new AppDbHelper(mContext);
+        mDbHelper = new AppDbHelper(context);
     }
 
-    public AppDbAdapter createDatabase() throws SQLException
+    public AppDbAdapter createDatabase()
     {
-        try
-        {
-            mDbHelper.createDataBase();
-        }
-        catch (IOException mIOException)
-        {
-            Log.e(TAG, mIOException.toString() + "  UnableToCreateDatabase");
-            throw new Error("UnableToCreateDatabase");
-        }
+        mDbHelper.createDataBase();
         return this;
     }
 
@@ -63,7 +52,7 @@ public class AppDbAdapter
     {
         try
         {
-            String sql ="SELECT author FROM problems GROUP BY author";
+            String sql ="SELECT author FROM problems GROUP BY author ORDER BY author ASC";
 
             Cursor mCur = mDb.rawQuery(sql, null);
             if (mCur!=null)
@@ -79,21 +68,38 @@ public class AppDbAdapter
         }
     }
 
+    public int getLastProblemId()
+    {
+        String sql = "SELECT id FROM problems ORDER BY id DESC LIMIT 1";
+        Cursor mCur = mDb.rawQuery(sql, null);
+        if (mCur!=null)
+        {
+            mCur.moveToNext();
+            int result = mCur.getInt(0);
+            mCur.close();
+
+            return result;
+        }
+
+        return 0;
+    }
+
     public Cursor getProblems(int holdsType, int holdsSetup, int fromGrade, int toGrade, String author)
     {
         try
         {
-            String sql ="SELECT * FROM problems WHERE " +
+            String sql = "SELECT * FROM problems WHERE " +
                     "holdsType LIKE '" + holdsType +"' AND " +
                     "holdsSetup LIKE '" + holdsSetup +"' AND " +
                     "grade >= " + fromGrade +" AND " +
-                    "grade <= " + toGrade +
-                    " ORDER BY grade ASC";
+                    "grade <= " + toGrade;
 
             if(author != null && !author.isEmpty())
             {
                 sql += " AND author LIKE '" + author + "'";
             }
+
+            sql += " ORDER BY grade ASC";
 
             Cursor mCur = mDb.rawQuery(sql, null);
             if (mCur!=null)
@@ -107,5 +113,22 @@ public class AppDbAdapter
             Log.e(TAG, "getProblems >>"+ mSQLException.toString());
             throw mSQLException;
         }
+    }
+
+    public boolean insertProblem(int id, String name, String author, int grade, int holdType, int holdSetup, String holds)
+    {
+        String sql = "INSERT INTO problems VALUES(" +
+                Integer.toString(id) + ", " +
+                "\"" + name + "\", " +
+                Integer.toString(holdType) + ", " +
+                Integer.toString(holdSetup) + ", " +
+                "\"" + author + "\", " +
+                Integer.toString(grade) + ", " +
+                holds +
+                ")";
+
+        mDb.execSQL(sql);
+
+        return true;
     }
 }

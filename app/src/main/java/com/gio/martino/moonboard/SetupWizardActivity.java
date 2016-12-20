@@ -2,17 +2,14 @@ package com.gio.martino.moonboard;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.KeyEvent;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class SetupWizardActivity extends Activity {
+public class SetupWizardActivity extends Activity
+{
 
     private int backgroundImageId = R.drawable.setup_1_1;
     String[] holdsStrs;
@@ -20,7 +17,8 @@ public class SetupWizardActivity extends Activity {
     int currentHoldIndex = -1;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup_wizard);
 
@@ -42,23 +40,20 @@ public class SetupWizardActivity extends Activity {
     }
 
     @Override
-    protected void onDestroy()
+    public boolean dispatchKeyEvent(KeyEvent event)
     {
-        super.onDestroy();
-    }
-
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
         int action = event.getAction();
         int keyCode = event.getKeyCode();
         switch (keyCode) {
             case KeyEvent.KEYCODE_VOLUME_UP:
-                if (action == KeyEvent.ACTION_DOWN) {
+                if (action == KeyEvent.ACTION_DOWN)
+                {
                     nextHold();
                 }
                 return true;
             case KeyEvent.KEYCODE_VOLUME_DOWN:
-                if (action == KeyEvent.ACTION_DOWN) {
+                if (action == KeyEvent.ACTION_DOWN)
+                {
                     prevHold();
                 }
                 return true;
@@ -124,12 +119,27 @@ public class SetupWizardActivity extends Activity {
         if (holdLetter == null || holdLetter.length() == 0)
             return 0;
 
-        char firstChar = holdLetter.charAt(0);
-        int value = firstChar - 'A';
+        // old format : <item>E18 / 91 / N</item>
+        try
+        {
+            char firstChar = holdLetter.charAt(0);
+            int value = firstChar - 'A';
 
-        int value2 = Integer.decode(holdLetter.substring(1).split(" ")[0]);
+            int value2 = Integer.decode(holdLetter.substring(1).split(" ")[0]);
 
-        return value + (value2 - 1) * 11; // 11 = K
+            return value + (value2 - 1) * 11; // 11 = K
+        }
+        // new format: <item>1/H7/SE</item>
+        catch (java.lang.NumberFormatException ex)
+        {
+            String[] strs = holdLetter.split("/");
+
+            char firstChar = strs[1].charAt(0);
+            int value = firstChar - 'A';
+            int value2 = Integer.decode(strs[1].substring(1));
+
+            return value + (value2 - 1) * 11; // 11 = K
+         }
     }
 
     private static byte[] getAllHoldsFromSetup(String[] holdsStrs)
@@ -155,52 +165,23 @@ public class SetupWizardActivity extends Activity {
             data[i++] = 0; // type 0
         }
 
-        ((MoonboardApplication)getApplication()).getMoonboardCommunicationService().send(MoonboardCommunicationService.MESSAGE_TYPE_SET_PROBLEM, data);
+        ((MoonboardApplication)getApplication()).getMoonboardCommunicationService()
+                .send(MoonboardCommunicationService.MESSAGE_TYPE_SET_PROBLEM, data);
     }
 
     private void drawHolds(byte[] holds)
     {
-        BitmapFactory.Options myOptions = new BitmapFactory.Options();
-        myOptions.inDither = true;
-        myOptions.inScaled = false;
-        myOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        //myOptions.inPurgeable = true;
-
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), backgroundImageId);
-        Bitmap cachedBitmap = Bitmap.createBitmap(bitmap);
-
-        Bitmap mutableBitmap = cachedBitmap.copy(Bitmap.Config.ARGB_8888, true);
-
-        Canvas canvas = new Canvas(mutableBitmap);
-
-        Paint paint = new Paint();
-        paint.setAntiAlias(true);
-        paint.setColor(Color.RED);
-        paint.setAlpha(60);
-
-        ImageView imageView = (ImageView)findViewById(R.id.imageView);
-        //int w = imageView.getMeasuredWidth();
-        //int h = imageView.getMeasuredHeight();
-
-        float scaleX = 2;//(float)bitmap.getWidth() / (float)w;
-        float scaleY = 2;//(float)bitmap.getHeight() / (float)h;
-
-        float startX = 94 * scaleX;
-        float startY = 936 * scaleY;
-        float deltaX = 50 * scaleX;
-        float deltaY = 50 * scaleY;
-
-        for(byte hold : holds)
+        byte[] data = new byte[holds.length*2];
+        int i = 0;
+        for(byte h : holds)
         {
-            int x = (hold & 0xff) % 11;
-            int y = (hold & 0xff) / 11;
-
-            float px = startX + x * deltaX;
-            float py = startY - y * deltaY;
-
-            canvas.drawCircle(px, py, 50, paint);
+            data[i++] = h;
+            data[i++] = 0; // type 0
         }
 
-        imageView.setImageBitmap(mutableBitmap);
+        Bitmap image = ProblemBitmap.get(getBaseContext(), backgroundImageId, data, false, false, 0);
+
+        ImageView imageView = (ImageView)findViewById(R.id.imageView);
+        imageView.setImageBitmap(image);
     }
 }

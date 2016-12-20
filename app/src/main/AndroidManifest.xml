@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.gio.martino.moonboard" >
+    package="com.gio.martino.moonboard">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -13,11 +13,11 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,39 +27,33 @@
         <activity
             android:name=".ProblemsActivity"
             android:label="@string/title_activity_problems"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ColorPickerActivity"
             android:label="@string/title_activity_color_picker"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".CreateProblemActivity"
             android:label="@string/title_activity_create_problem"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".SetupWizardActivity"
             android:label="@string/title_activity_setup_wizard"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"></activity>
 
         <service
             android:name=".MoonboardCommunicationService"
             android:enabled="true"
-            android:exported="true" >
-        </service>
+            android:exported="true"></service>
 
         <activity
             android:name=".StatsActivity"
-            android:label="@string/title_activity_stats" >
-        </activity>
+            android:label="@string/title_activity_stats"></activity>
+        <activity android:name=".TestActivity"></activity>
     </application>
 
 </manifest>

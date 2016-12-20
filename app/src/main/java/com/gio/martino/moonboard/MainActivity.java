@@ -22,8 +22,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        new MoonboardHttpService().execute("update_db");
-
         Button button = (Button)findViewById(R.id.searchButton);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

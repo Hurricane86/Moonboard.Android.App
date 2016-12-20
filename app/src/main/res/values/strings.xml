@@ -88,14 +88,14 @@
         <item>3</item>
         <item>4</item>
         <item>5</item>
-     </string-array>
+    </string-array>
 
     <string-array name="hold_types">
         <item>Normal hold</item>
         <item>Start hold</item>
         <item>Top hold</item>
     </string-array>
-    
+
     <string name="title_activity_problems">Problems</string>
     <string name="title_activity_color_picker">Color Picker</string>
     <string name="title_activity_settings">Settings</string>

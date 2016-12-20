@@ -23,7 +23,7 @@ public class AppDbHelper extends SQLiteOpenHelper
     //destination path (location) of our database on device
     private static String DB_PATH = "";
     private static String DB_NAME ="moonboardDB.sqlite";// Database name
-    private static int DB_VERSION = 3;
+    private static int DB_VERSION = 9;
     private SQLiteDatabase mDataBase;
     private final Context mContext;
 
@@ -42,7 +42,7 @@ public class AppDbHelper extends SQLiteOpenHelper
         this.mContext = context;
     }
 
-    public void createDataBase() throws IOException
+    public void createDataBase()
     {
         //If database not exists copy it from the assets
 

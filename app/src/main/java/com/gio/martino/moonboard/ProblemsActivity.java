@@ -11,9 +11,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
+import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -24,30 +26,68 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Random;
+
 public class ProblemsActivity extends Activity {
+
+    private class GestureListener extends GestureDetector.SimpleOnGestureListener {
+
+        ProblemsActivity owner;
+        Random rand = new Random();
+
+        public GestureListener(ProblemsActivity owner)
+        {
+            this.owner = owner;
+        }
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return true;
+        }
+        // event when double tap occurs
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+
+            int position = rand.nextInt(owner.problemsCount);
+            owner.gotoProblem(position, INTERACTION_TYPE.DOUBLE_TAP);
+
+            Toast.makeText(getApplicationContext(), "new random problem!", Toast.LENGTH_SHORT).show();
+
+            return true;
+        }
+    }
 
     private AppDbAdapter db = null;
     private UserDbHelper userDbHelper = null;
     ProblemUserDbRecord problemUserDbRecord = null;
     private Cursor problemsCursor = null;
     private int currentProblemIndex = 0;
-    private int problemsCount = 0;
+    public int problemsCount = 0;
     private int currentProblemId = 0;
     private byte[] holds = null;
     private boolean sendingFreezed = false;
+    private GestureDetector gestureDetector;;
 
-    private enum INTERACTION_TYPE
+    public enum INTERACTION_TYPE
     {
         VIEW_PAGER,
         SEEK_BAR,
         VOLUME_BUTTONS,
+        DOUBLE_TAP,
         MOONBOARD,
         REFRESHING
     }
 
     @Override
+    public boolean onTouchEvent(MotionEvent e) {
+        return gestureDetector.onTouchEvent(e);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        gestureDetector = new GestureDetector(getApplicationContext(), new GestureListener(this));
 
         //Remove title bar
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -75,6 +115,13 @@ public class ProblemsActivity extends Activity {
             @Override
             public void onPageScrollStateChanged(int state) {
 
+            }
+        });
+        viewPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                return gestureDetector.onTouchEvent(event);
             }
         });
 
@@ -122,33 +169,30 @@ public class ProblemsActivity extends Activity {
             }
         });
 
-        ((MoonboardApplication)getApplication()).getMoonboardCommunicationService().messageReceiver
-                = new MoonboardCommunicationService.MessageReceiver()
+        MoonboardCommunicationService service = ((MoonboardApplication)getApplication()).getMoonboardCommunicationService();
+        if(service != null)
         {
-            @Override
-            public void onMessageReceived(int messageType, byte[] buffer)
-            {
-                switch(messageType)
-                {
-                    case 1:
-                        gotoProblem(currentProblemIndex+1, INTERACTION_TYPE.MOONBOARD);
-                        break;
-                    case 2:
-                        gotoProblem(currentProblemIndex-1, INTERACTION_TYPE.MOONBOARD);
-                        break;
-                }
+            service.messageReceiver = new MoonboardCommunicationService.MessageReceiver() {
+                @Override
+                public void onMessageReceived(int messageType, byte[] buffer) {
+                    switch (messageType) {
+                        case 1:
+                            gotoProblem(currentProblemIndex + 1, INTERACTION_TYPE.MOONBOARD);
+                            break;
+                        case 2:
+                            gotoProblem(currentProblemIndex - 1, INTERACTION_TYPE.MOONBOARD);
+                            break;
+                    }
 
-                try
-                {
-                    Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                    Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
-                    r.play();
+                    try {
+                        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                        Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+                        r.play();
+                    } catch (Exception e) {
+                    }
                 }
-                catch (Exception e)
-                {
-                }
-            }
-        };
+            };
+        }
 
         gotoProblem(currentProblemIndex, INTERACTION_TYPE.REFRESHING);
     }
@@ -231,7 +275,7 @@ public class ProblemsActivity extends Activity {
         problemUserDbRecord.setIsInWishlist(false);
     }
 
-    private void gotoProblem(int newProblemIndex, INTERACTION_TYPE interactionType)
+    public void gotoProblem(int newProblemIndex, INTERACTION_TYPE interactionType)
     {
         if(newProblemIndex == currentProblemIndex &&
                 interactionType != INTERACTION_TYPE.REFRESHING)
@@ -259,6 +303,7 @@ public class ProblemsActivity extends Activity {
                 viewPager.setCurrentItem(currentProblemIndex - 1, false);
                 break;
             }
+            case DOUBLE_TAP:
             case MOONBOARD:
             case VOLUME_BUTTONS: {
                 SeekBar seekBar = (SeekBar) findViewById(R.id.seekBar);

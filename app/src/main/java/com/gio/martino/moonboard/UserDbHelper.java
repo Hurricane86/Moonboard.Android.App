@@ -73,7 +73,6 @@ public class UserDbHelper extends SQLiteOpenHelper
     public void makeBackup(int version)
     {
         File currentDB = context.getApplicationContext().getDatabasePath("ProblemsDone.db");
-        //File backupDB = new File(Environment.getExternalStorageDirectory() + "/download/", "MoonboardUserDb.sqlite");
         File backupDB = new File(context.getApplicationInfo().dataDir + "/databases/", "MoonboardUserDb_v"+version+".sqlite");
 
         if (currentDB.exists())

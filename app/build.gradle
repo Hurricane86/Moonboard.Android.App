@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
+    compileSdkVersion 22
     buildToolsVersion "23.0.1"
 
     defaultConfig {
@@ -23,6 +23,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile "com.github.danielnilsson9:color-picker-view:1.4.0@aar"
     //compile 'com.akexorcist:bluetoothspp:1.0.0'
-    compile 'com.android.support:support-v4:21.0.0'
+    compile 'com.android.support:support-v4:22.0.0'
     compile 'com.diogobernardino:williamchart:2.0.1'
+    compile 'com.android.support:design:22.2.0'
 }
